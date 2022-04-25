@@ -1,0 +1,13 @@
+FROM dtfni-docker.artifactory.coxautoinc.com/apps/os/centos:7
+
+RUN yum install -y \
+      java-1.8.0-openjdk-devel-1.8.0.262.b10-0.el7_8 && \
+    yum clean all && \
+    rm -rf /var/cache/yum
+
+ENV JAVA_HOME=/etc/alternatives/java_sdk
+
+RUN curl http://artifactory-proxy.apps.fni/artifactory/dtfni-generic/software/maven/apache-maven-3.5.4-bin.tar.gz -o /tmp/apache-maven-3.5.4-bin.tar.gz && \
+    tar -C /opt/ -xzvf /tmp/apache-maven-3.5.4-bin.tar.gz && \
+    alternatives --install /usr/bin/mvn mvn /opt/apache-maven-3.5.4/bin/mvn 1 && \
+    rm -f /tmp/apache-maven-3.5.4-bin.tar.gz
